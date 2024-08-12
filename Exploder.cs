@@ -18,22 +18,9 @@ public class Exploder : MonoBehaviour
         _spawner.CubesSpawned += Explode;
     }
 
-    private void Explode(Vector3 explosionPosition)
+    private void Explode(Vector3 explosionPosition, List<Rigidbody> cubes)
     {
-        foreach (Rigidbody cube in GetExplodableObjects(explosionPosition))
+        foreach (Rigidbody cube in cubes)
             cube.AddExplosionForce(_explosionForce, explosionPosition, _explosionRadius);
-    }
-
-    private List<Rigidbody> GetExplodableObjects(Vector3 explosionPosition)
-    {
-        Collider[] hits = Physics.OverlapSphere(explosionPosition, _explosionRadius);
-
-        List<Rigidbody> cubes = new();
-
-        foreach (Collider hit in hits)
-            if (hit.attachedRigidbody != null)
-                cubes.Add(hit.attachedRigidbody);
-        
-        return cubes;
     }
 }
